@@ -9,38 +9,102 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* --- 1. THEME & VARIABLES (ธีมสีโรงพยาบาลทันสมัย) --- */
         :root {
-            --primary: #0d9488;
-            --primary-light: #2dd4bf;
-            --accent: #f0fdfa;
-            --text-dark: #134e4a;
+            --primary: #0d9488;       /* Teal 600 (สีหลัก) */
+            --primary-light: #2dd4bf; /* Teal 400 (สีรอง) */
+            --accent: #f0fdfa;        /* พื้นหลังอ่อน */
+            --text-dark: #134e4a;     /* สีตัวอักษรเข้ม */
             --white-glass: rgba(255, 255, 255, 0.95);
-            --shadow-soft: 0 10px 30px -5px rgba(13, 148, 136, 0.15);
+            --radius-xl: 28px;
         }
-        body { font-family: 'Prompt', sans-serif; background: linear-gradient(135deg, var(--accent) 0%, #e0f2f1 100%); margin: 0; min-height: 100vh; color: var(--text-dark); overflow-x: hidden; }
-        
-        .hero-section { text-align: center; padding: 50px 20px; }
-        .hero-mascot { width: 180px; margin-bottom: 20px; filter: drop-shadow(0 10px 15px rgba(13, 148, 136, 0.2)); animation: float 4s infinite; }
-        .hero-title { font-size: 2rem; font-weight: 600; margin: 0; color: var(--primary); }
-        .hero-subtitle { font-size: 1.1rem; color: #52796f; margin-top: 10px; }
 
-        .chat-fab-container { position: fixed; bottom: 30px; right: 30px; z-index: 1000; display: flex; flex-direction: column; align-items: center; }
-        .chat-fab { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 50%; box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, var(--accent) 0%, #e0f2f1 100%);
+            margin: 0; padding: 0; min-height: 100vh;
+            color: var(--text-dark); overflow-x: hidden;
+        }
+
+        /* --- MAIN PAGE --- */
+        .hero-section {
+            text-align: center; padding: 60px 20px;
+        }
+        .hero-mascot {
+            width: 180px; height: auto; margin-bottom: 20px;
+            filter: drop-shadow(0 10px 15px rgba(13, 148, 136, 0.2));
+            animation: float 4s ease-in-out infinite;
+        }
+        .hero-title {
+            font-size: 1.8rem; font-weight: 600; margin: 0; color: var(--primary);
+        }
+        .hero-subtitle { font-size: 1rem; color: #52796f; margin-top: 10px; }
+
+        /* --- CHAT FAB (ปุ่มเปิดแชท) --- */
+        .chat-fab-container {
+            position: fixed; bottom: 30px; right: 30px; z-index: 1000;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .chat-fab {
+            width: 70px; height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s;
+        }
         .chat-fab:hover { transform: scale(1.1); }
-        .chat-fab-icon { width: 45px; }
-        .chat-fab-label { background: var(--white-glass); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; color: var(--primary); margin-bottom: 10px; opacity: 0; transform: translateY(10px); transition: 0.3s; }
+        .chat-fab-icon { width: 45px; height: 45px; }
+        .chat-fab-label {
+            background: var(--white-glass); padding: 6px 14px; border-radius: 20px;
+            font-size: 0.85rem; color: var(--primary); margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            opacity: 0; transform: translateY(10px); transition: 0.3s;
+        }
         .chat-fab-container:hover .chat-fab-label { opacity: 1; transform: translateY(0); }
 
-        .chat-window { position: fixed; bottom: 110px; right: 30px; width: 360px; height: 550px; max-height: 80vh; max-width: calc(100% - 60px); background: var(--white-glass); backdrop-filter: blur(15px); border-radius: 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: none; flex-direction: column; z-index: 999; border: 1px solid rgba(255,255,255,0.8); animation: popIn 0.4s; }
-        .chat-header { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 20px; display: flex; align-items: center; gap: 15px; }
+        /* --- CHAT WINDOW --- */
+        .chat-window {
+            position: fixed; bottom: 110px; right: 30px;
+            width: 360px; height: 550px; max-height: 80vh; max-width: calc(100% - 60px);
+            background: var(--white-glass); backdrop-filter: blur(15px);
+            border-radius: var(--radius-xl);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            display: none; flex-direction: column; overflow: hidden;
+            z-index: 999; border: 1px solid rgba(255,255,255,0.8);
+            transform-origin: bottom right; animation: popIn 0.4s;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; padding: 20px; display: flex; align-items: center; gap: 15px;
+        }
         .chat-header-mascot { width: 50px; background: white; border-radius: 50%; padding: 3px; }
-        .chat-body { flex: 1; padding: 20px; background: #f0fdfa; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
-        .msg { padding: 12px 18px; border-radius: 20px; max-width: 80%; font-size: 0.95rem; word-wrap: break-word; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .close-btn { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.2rem; }
+
+        .chat-body {
+            flex: 1; padding: 20px; background: #f0fdfa;
+            overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth;
+        }
+        .msg {
+            padding: 12px 18px; border-radius: 20px; max-width: 80%; font-size: 0.95rem; line-height: 1.5;
+            position: relative; word-wrap: break-word; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
         .msg-bot { background: white; align-self: flex-start; border-bottom-left-radius: 4px; }
         .msg-user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-        .chat-footer { padding: 15px; background: white; border-top: 1px solid #e0f2f1; display: flex; gap: 10px; }
-        .chat-input { width: 100%; border: none; background: #f0fdfa; padding: 12px 20px; border-radius: 30px; outline: none; }
-        .send-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--primary); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        .chat-footer {
+            padding: 15px; background: white; border-top: 1px solid #e0f2f1; display: flex; gap: 10px;
+        }
+        .chat-input {
+            flex: 1; border: none; background: #f0fdfa; padding: 12px 20px;
+            border-radius: 30px; outline: none; font-family: 'Prompt';
+        }
+        .send-btn {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: var(--primary); color: white; border: none;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
         .typing-indicator { display: none; align-self: flex-start; background: white; padding: 10px 15px; border-radius: 20px; color: #9ca3af; font-style: italic; font-size: 0.85rem; margin-left: 10px; }
 
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
@@ -52,7 +116,7 @@
     <div class="hero-section">
         <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Hospital Mascot" class="hero-mascot">
         <h1 class="hero-title">โรงพยาบาลสะเดา</h1>
-        <p class="hero-subtitle">ผู้ช่วยอัจฉริยะ แพทย์แผนไทย-จีน</p>
+        <p class="hero-subtitle">ปรึกษาสุขภาพ & จองคิวออนไลน์</p>
     </div>
 
     <div class="chat-fab-container">
@@ -67,9 +131,9 @@
             <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" class="chat-header-mascot">
             <div>
                 <h3 style="margin:0; font-size:1.1rem;">น้องใบบุญ (AI)</h3>
-                <p style="margin:0; font-size:0.8rem; opacity:0.9;">ออนไลน์พร้อมบริการ</p>
+                <p style="margin:0; font-size:0.8rem; opacity:0.9;">ออนไลน์</p>
             </div>
-            <i class="fas fa-times" style="position:absolute; right:20px; cursor:pointer;" onclick="toggleChat()"></i>
+            <i class="fas fa-times close-btn" onclick="toggleChat()"></i>
         </div>
         
         <div class="chat-body" id="chatBody">
@@ -95,8 +159,12 @@
 
         function toggleChat() {
             const win = document.getElementById('chatWindow');
-            win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
-            if(win.style.display === 'flex') setTimeout(() => document.getElementById('chatInput').focus(), 300);
+            if (win.style.display === 'flex') {
+                win.style.display = 'none';
+            } else {
+                win.style.display = 'flex';
+                setTimeout(() => document.getElementById('chatInput').focus(), 300);
+            }
         }
 
         function appendMessage(text, sender) {
