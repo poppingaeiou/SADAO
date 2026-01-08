@@ -3,314 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>แพทย์แผนไทยโรงพยาบาลสะเดา - น้องใบบุญ</title>
+    <title>โรงพยาบาลสะเดา - ผู้ช่วยอัจฉริยะ</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- 1. THEME & VARIABLES (ธีมสีโรงพยาบาลทันสมัย) --- */
         :root {
-            --primary: #0d9488;       /* Teal 600 (สีหลัก เขียวอมฟ้า) */
-            --primary-light: #2dd4bf; /* Teal 400 (สีรอง สว่าง) */
-            --accent: #f0fdfa;        /* พื้นหลังอ่อน */
-            --text-dark: #134e4a;     /* สีตัวอักษรเข้ม */
+            --primary: #0d9488;
+            --primary-light: #2dd4bf;
+            --accent: #f0fdfa;
+            --text-dark: #134e4a;
             --white-glass: rgba(255, 255, 255, 0.95);
             --shadow-soft: 0 10px 30px -5px rgba(13, 148, 136, 0.15);
-            --radius-xl: 28px;
-            --radius-md: 16px;
         }
-
-        body {
-            font-family: 'Prompt', sans-serif;
-            background: linear-gradient(135deg, var(--accent) 0%, #e0f2f1 100%);
-            margin: 0; padding: 0;
-            min-height: 100vh;
-            color: var(--text-dark);
-            overflow-x: hidden;
-        }
-
-        /* --- 2. MAIN LANDING PAGE (หน้าหลัก) --- */
-        .hero-section {
-            text-align: center;
-            padding: 50px 20px;
-            /* สร้างลวดลายพื้นหลังเบาๆ */
-            background-image: radial-gradient(circle at 20% 20%, rgba(45, 212, 191, 0.1) 0%, transparent 50%),
-                              radial-gradient(circle at 80% 80%, rgba(13, 148, 136, 0.1) 0%, transparent 50%);
-        }
-
-        /* การ์ตูนมาสคอตหลัก (มีแอนิเมชั่นลอยตัว) */
-        .hero-mascot {
-            width: 180px; height: auto;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 10px 15px rgba(13, 148, 136, 0.2));
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .hero-title {
-            font-size: 2rem; font-weight: 600; margin: 0;
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        body { font-family: 'Prompt', sans-serif; background: linear-gradient(135deg, var(--accent) 0%, #e0f2f1 100%); margin: 0; min-height: 100vh; color: var(--text-dark); overflow-x: hidden; }
+        
+        .hero-section { text-align: center; padding: 50px 20px; }
+        .hero-mascot { width: 180px; margin-bottom: 20px; filter: drop-shadow(0 10px 15px rgba(13, 148, 136, 0.2)); animation: float 4s infinite; }
+        .hero-title { font-size: 2rem; font-weight: 600; margin: 0; color: var(--primary); }
         .hero-subtitle { font-size: 1.1rem; color: #52796f; margin-top: 10px; }
 
-        /* --- 3. CHATBOT WIDGET (ปุ่มและหน้าต่างแชท) --- */
-        
-        /* ปุ่มเปิดแชทลอย (Floating Button) */
-        .chat-fab-container {
-            position: fixed; bottom: 30px; right: 30px; z-index: 1000;
-            display: flex; flex-direction: column; align-items: center;
-        }
-        .chat-fab {
-            width: 70px; height: 70px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: 50%;
-            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-        }
-        /* ไอคอนในการ์ตูน */
-        .chat-fab-icon { width: 45px; height: 45px; animation: bounce-gentle 2s infinite; }
-        /* ข้อความ "ปรึกษาได้เลย" */
-        .chat-fab-label {
-            background: var(--white-glass);
-            padding: 6px 14px; border-radius: 20px;
-            font-size: 0.85rem; font-weight: 500;
-            color: var(--primary);
-            box-shadow: var(--shadow-soft);
-            margin-bottom: 10px;
-            opacity: 0; transform: translateY(10px);
-            transition: 0.3s;
-        }
+        .chat-fab-container { position: fixed; bottom: 30px; right: 30px; z-index: 1000; display: flex; flex-direction: column; align-items: center; }
+        .chat-fab { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 50%; box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .chat-fab:hover { transform: scale(1.1); }
+        .chat-fab-icon { width: 45px; }
+        .chat-fab-label { background: var(--white-glass); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; color: var(--primary); margin-bottom: 10px; opacity: 0; transform: translateY(10px); transition: 0.3s; }
         .chat-fab-container:hover .chat-fab-label { opacity: 1; transform: translateY(0); }
-        .chat-fab:hover { transform: scale(1.1) rotate(-5deg); }
-        .chat-fab:active { transform: scale(0.95); }
 
+        .chat-window { position: fixed; bottom: 110px; right: 30px; width: 360px; height: 550px; max-height: 80vh; max-width: calc(100% - 60px); background: var(--white-glass); backdrop-filter: blur(15px); border-radius: 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: none; flex-direction: column; z-index: 999; border: 1px solid rgba(255,255,255,0.8); animation: popIn 0.4s; }
+        .chat-header { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 20px; display: flex; align-items: center; gap: 15px; }
+        .chat-header-mascot { width: 50px; background: white; border-radius: 50%; padding: 3px; }
+        .chat-body { flex: 1; padding: 20px; background: #f0fdfa; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
+        .msg { padding: 12px 18px; border-radius: 20px; max-width: 80%; font-size: 0.95rem; word-wrap: break-word; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .msg-bot { background: white; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .msg-user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-footer { padding: 15px; background: white; border-top: 1px solid #e0f2f1; display: flex; gap: 10px; }
+        .chat-input { width: 100%; border: none; background: #f0fdfa; padding: 12px 20px; border-radius: 30px; outline: none; }
+        .send-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--primary); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .typing-indicator { display: none; align-self: flex-start; background: white; padding: 10px 15px; border-radius: 20px; color: #9ca3af; font-style: italic; font-size: 0.85rem; margin-left: 10px; }
 
-        /* หน้าต่างแชท (Chat Window) */
-        .chat-window {
-            position: fixed; bottom: 110px; right: 30px;
-            width: 360px; height: 550px; max-height: 80vh;
-            max-width: calc(100% - 60px);
-            background: var(--white-glass);
-            backdrop-filter: blur(15px); /* เอฟเฟกต์กระจกฝ้า */
-            border-radius: var(--radius-xl);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            display: none; flex-direction: column; overflow: hidden;
-            z-index: 999; border: 1px solid rgba(255,255,255,0.8);
-            transform-origin: bottom right;
-            animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* หัวหน้าต่างแชท */
-        .chat-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white; padding: 20px;
-            display: flex; align-items: center; gap: 15px;
-            position: relative; overflow: hidden;
-        }
-        /* มาสคอตเล็กในหัวแชท */
-        .chat-header-mascot {
-            width: 50px; height: 50px; background: white; border-radius: 50%; padding: 3px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            animation: float 3s ease-in-out infinite; /* แอนิเมชั่นลอย */
-        }
-        .chat-header-info h3 { margin: 0; font-size: 1.1rem; }
-        .chat-header-info p { margin: 2px 0 0; font-size: 0.8rem; opacity: 0.9; display: flex; align-items: center; gap: 5px;}
-        .status-dot { width: 8px; height: 8px; background: #86efac; border-radius: 50%; display: inline-block; animation: pulse-green 2s infinite; }
-        .close-btn { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.2rem; opacity: 0.8; transition: 0.2s; }
-        .close-btn:hover { opacity: 1; transform: rotate(90deg); }
-
-        /* พื้นที่ข้อความ */
-        .chat-body {
-            flex: 1; padding: 20px;
-            background: #f0fdfa; /* สีพื้นหลังอ่อนๆ ในแชท */
-            overflow-y: auto; display: flex; flex-direction: column; gap: 15px;
-            scroll-behavior: smooth;
-        }
-        .msg {
-            padding: 12px 18px; border-radius: 20px;
-            max-width: 80%; font-size: 0.95rem; line-height: 1.5;
-            position: relative; word-wrap: break-word;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            animation: slideInUp 0.3s ease;
-        }
-        .msg-bot {
-            background: white; color: var(--text-dark);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-        .msg-bot::before { /* ไอคอนหุ่นยนต์เล็กๆ หน้าข้อความบอท */
-            content: '🤖'; position: absolute; bottom: -5px; left: -25px; font-size: 1.2rem;
-        }
-        .msg-user {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white; align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        /* พื้นที่พิมพ์ข้อความ */
-        .chat-footer {
-            padding: 15px; background: white;
-            border-top: 1px solid #e0f2f1; display: flex; gap: 10px; align-items: center;
-        }
-        .chat-input-container {
-            flex: 1; position: relative;
-            background: #f0fdfa; border-radius: 30px;
-            border: 2px solid transparent; transition: 0.3s;
-        }
-        .chat-input-container:focus-within { border-color: var(--primary-light); background: white; }
-        .chat-input {
-            width: 100%; border: none; background: transparent;
-            padding: 12px 20px; outline: none; font-family: 'Prompt'; font-size: 0.95rem;
-        }
-        .send-btn {
-            width: 48px; height: 48px; border-radius: 50%;
-            background: var(--primary); color: white; border: none;
-            font-size: 1.1rem; cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
-        }
-        .send-btn:hover { transform: scale(1.1) rotate(-10deg); background: var(--primary-light); }
-
-        /* สถานะกำลังพิมพ์ */
-        .typing-indicator {
-            display: none; align-self: flex-start;
-            background: white; padding: 10px 15px; border-radius: 20px;
-            border-bottom-left-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            color: #9ca3af; font-style: italic; font-size: 0.85rem;
-            margin-left: 25px; /* เว้นที่ให้ไอคอนบอท */
-        }
-        .dots { display: inline-block; animation: ellipsis 1.5s infinite; }
-
-        /* --- ANIMATIONS (คีย์เฟรมการเคลื่อนไหว) --- */
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
-        @keyframes bounce-gentle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes popIn { from { opacity: 0; transform: scale(0.8) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        @keyframes slideInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(134, 239, 172, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(134, 239, 172, 0); } 100% { box-shadow: 0 0 0 0 rgba(134, 239, 172, 0); } }
-        @keyframes ellipsis { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
     </style>
 </head>
 <body>
 
     <div class="hero-section">
         <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Hospital Mascot" class="hero-mascot">
-        <h1 class="hero-title">โรงพยาบาลสะเดา ยินดีต้อนรับค่ะ</h1>
-        <p class="hero-subtitle">บริการด้วยใจ ห่วงใยดุจญาติมิตร <br> ปรึกษาสุขภาพ แพทย์แผนไทย-จีน ได้ที่นี่</p>
+        <h1 class="hero-title">โรงพยาบาลสะเดา</h1>
+        <p class="hero-subtitle">ผู้ช่วยอัจฉริยะ แพทย์แผนไทย-จีน</p>
     </div>
 
     <div class="chat-fab-container">
-        <div class="chat-fab-label">คลิกเพื่อปรึกษาน้องใบบุญ 👇</div>
+        <div class="chat-fab-label">ปรึกษาน้องใบบุญ 👇</div>
         <div class="chat-fab" onclick="toggleChat()">
-            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712070.png" alt="Chat Icon" class="chat-fab-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712070.png" class="chat-fab-icon">
         </div>
     </div>
 
     <div class="chat-window" id="chatWindow">
         <div class="chat-header">
-            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="Bot Avatar" class="chat-header-mascot">
-            <div class="chat-header-info">
-                <h3>น้องใบบุญ (AI Assistant)</h3>
-                <p><span class="status-dot"></span> ออนไลน์พร้อมบริการ</p>
+            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" class="chat-header-mascot">
+            <div>
+                <h3 style="margin:0; font-size:1.1rem;">น้องใบบุญ (AI)</h3>
+                <p style="margin:0; font-size:0.8rem; opacity:0.9;">ออนไลน์พร้อมบริการ</p>
             </div>
-            <i class="fas fa-times close-btn" onclick="toggleChat()"></i>
+            <i class="fas fa-times" style="position:absolute; right:20px; cursor:pointer;" onclick="toggleChat()"></i>
         </div>
         
         <div class="chat-body" id="chatBody">
             <div class="msg msg-bot">
-                สวัสดีค่ะ 🙏 <b>"น้องใบบุญ"</b> ยินดีให้บริการค่ะ <br>
-                สอบถามเรื่อง <b>สมุนไพร</b>, <b>ยาแผนไทย</b> หรือเช็ค <b>คิวว่าง</b> ได้เลยนะคะ 😊
+                สวัสดีค่ะ 🙏 <b>น้องใบบุญ</b> ยินดีให้บริการค่ะ <br>
+                สอบถามเรื่อง <b>สมุนไพร</b> หรือ <b>คิวว่าง</b> ได้เลยนะคะ 😊
             </div>
         </div>
         
-        <div class="typing-indicator" id="typingIndicator">
-            น้องใบบุญกำลังพิมพ์<span class="dots"></span>
-        </div>
+        <div class="typing-indicator" id="typingIndicator">กำลังพิมพ์...</div>
 
         <div class="chat-footer">
-            <div class="chat-input-container">
-                <input type="text" id="chatInput" class="chat-input" placeholder="พิมพ์คำถามที่นี่..." autocomplete="off">
-            </div>
-            <button class="send-btn" onclick="sendMessage()">
-                <i class="fas fa-paper-plane"></i>
-            </button>
+            <input type="text" id="chatInput" class="chat-input" placeholder="พิมพ์คำถาม..." autocomplete="off">
+            <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
     <script>
         // **********************************************************
-        // [สำคัญ] URL หลังบ้านที่คุณให้มา (ใส่ให้แล้ว ห้ามแก้)
+        // [สำคัญ] วาง URL ใหม่ที่ได้จากการ Deploy ตรงนี้
         // **********************************************************
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwiimpKfLJ7tPJa8vHnBUcdtGKAXO2ClyhJI7oN09LItvYxDSfVpnhpEtMlZA15B-eK/exec"; 
+        const WEB_APP_URL = "วาง_URL_จาก_ขั้นตอนที่_2_ตรงนี้"; 
 
-        // ฟังก์ชันเปิด/ปิดหน้าต่างแชท
         function toggleChat() {
             const win = document.getElementById('chatWindow');
-            if (win.style.display === 'flex') {
-                win.style.display = 'none';
-            } else {
-                win.style.display = 'flex';
-                // โฟกัสที่ช่องพิมพ์ทันทีที่เปิด
-                setTimeout(() => document.getElementById('chatInput').focus(), 300);
-            }
+            win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+            if(win.style.display === 'flex') setTimeout(() => document.getElementById('chatInput').focus(), 300);
         }
 
-        // ฟังก์ชันเพิ่มข้อความลงในจอ
         function appendMessage(text, sender) {
             const body = document.getElementById('chatBody');
             const div = document.createElement('div');
             div.className = `msg msg-${sender}`;
-            // แปลงการขึ้นบรรทัดใหม่ (\n) เป็น <br>
             div.innerHTML = text.replace(/\n/g, '<br>');
             body.appendChild(div);
-            // เลื่อนจอลงล่างสุดอัตโนมัติ
             body.scrollTop = body.scrollHeight;
         }
 
-        // ฟังก์ชันส่งข้อความ
         async function sendMessage() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
             if(!text) return;
 
-            // 1. แสดงข้อความผู้ใช้
             appendMessage(text, 'user');
-            input.value = ''; // เคลียร์ช่องพิมพ์
-
-            // 2. แสดงสถานะกำลังพิมพ์
-            const typing = document.getElementById('typingIndicator');
-            typing.style.display = 'block';
+            input.value = '';
+            document.getElementById('typingIndicator').style.display = 'block';
             document.getElementById('chatBody').scrollTop = document.getElementById('chatBody').scrollHeight;
 
             try {
-                // 3. ส่งข้อมูลไปหลังบ้าน (Google Script)
                 const response = await fetch(WEB_APP_URL, {
                     method: "POST",
-                    // ใช้ mode: 'no-cors' ถ้ามีปัญหา CORS แต่ปกติ Web App ควรตั้งเป็น Anyone แล้ว
+                    headers: { "Content-Type": "text/plain" }, // แก้ CORS
                     body: JSON.stringify({ message: text })
                 });
                 
                 const data = await response.json();
+                document.getElementById('typingIndicator').style.display = 'none';
                 
-                // 4. ซ่อนสถานะกำลังพิมพ์ และแสดงคำตอบ AI
-                typing.style.display = 'none';
                 if(data.status === 'success') {
                     appendMessage(data.reply, 'bot');
                 } else {
-                    appendMessage("⚠️ ระบบขัดข้องชั่วคราว ลองใหม่อีกครั้งนะคะ", 'bot');
+                    appendMessage("⚠️ ระบบแจ้ง: " + data.reply, 'bot');
                 }
 
             } catch (err) {
-                typing.style.display = 'none';
-                console.error(err);
-                appendMessage("❌ ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ (" + err.message + ")", 'bot');
+                document.getElementById('typingIndicator').style.display = 'none';
+                appendMessage("❌ เชื่อมต่อไม่ได้ (" + err.message + ")", 'bot');
             }
         }
 
-        // ตั้งค่าให้กด Enter เพื่อส่งข้อความได้
         document.getElementById('chatInput').addEventListener('keypress', (e) => {
             if(e.key === 'Enter') sendMessage();
         });
