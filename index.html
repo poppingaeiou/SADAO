@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>น้องสะเดา - ผู้ช่วยอัจฉริยะ รพ.สะเดา</title>
+    <title>น้องสะเดา - รพ.สะเดา</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,50 +15,56 @@
         body {
             font-family: 'Prompt', sans-serif;
             background: linear-gradient(135deg, var(--accent) 0%, #e0f2f1 100%);
-            margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+            margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden;
+            display: flex; flex-direction: column; align-items: center;
         }
         .hero-section {
-            text-align: center; padding: 60px 20px; flex: 1;
+            text-align: center; padding: 50px 20px; flex: 1;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .hero-mascot {
-            width: 200px; height: auto; margin-bottom: 25px;
+            width: 180px; max-width: 50%; height: auto; margin-bottom: 20px;
             filter: drop-shadow(0 15px 25px rgba(13,148,136,0.2));
             animation: float 4s ease-in-out infinite;
         }
-        .hero-title { font-size: 2.2rem; color: var(--primary); margin: 0; }
-        .hero-subtitle { font-size: 1.1rem; color: #52796f; margin-top: 10px; max-width: 450px; }
+        .hero-title { font-size: 1.8rem; color: var(--primary); margin: 0; }
+        .hero-subtitle { font-size: 1rem; color: #52796f; margin-top: 10px; max-width: 400px; line-height: 1.5; }
 
-        /* Chat Widget */
-        .chat-fab-container { position: fixed; bottom: 30px; right: 30px; z-index: 1000; display: flex; flex-direction: column; align-items: center; }
+        /* Floating Button */
+        .chat-fab-container { position: fixed; bottom: 25px; right: 20px; z-index: 1000; }
         .chat-fab {
-            width: 75px; height: 75px; background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: 50%; box-shadow: 0 8px 25px rgba(13,148,136,0.4);
-            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; overflow: hidden;
+            width: 65px; height: 65px; background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden;
         }
         .chat-fab-icon { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Chat Window - RESPONSIVE FIX */
         .chat-window {
-            position: fixed; bottom: 120px; right: 30px; width: 380px; height: 600px; max-height: 80vh;
-            background: var(--white-glass); backdrop-filter: blur(20px); border-radius: var(--radius-xl);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: none; flex-direction: column;
-            z-index: 999; border: 1px solid rgba(255,255,255,0.8); animation: popIn 0.4s ease;
+            position: fixed; bottom: 100px; right: 20px;
+            width: 360px; /* ขนาดปกติบนจอคอม */
+            max-width: calc(100% - 40px); /* แก้ปัญหาตกขอบมือถือ */
+            height: 550px; max-height: 70vh; 
+            background: var(--white-glass); backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl); box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: none; flex-direction: column; z-index: 999;
+            border: 1px solid rgba(255,255,255,0.8); animation: popIn 0.3s ease-out; overflow: hidden;
         }
         .chat-header {
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white; padding: 20px; display: flex; align-items: center; gap: 15px;
+            color: white; padding: 15px 20px; display: flex; align-items: center; gap: 12px;
         }
-        .chat-header-mascot { width: 50px; height: 50px; background: white; border-radius: 50%; object-fit: cover; }
-        .chat-body { flex: 1; padding: 20px; background: #f8fafc; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-        .msg { padding: 12px 18px; border-radius: 18px; max-width: 80%; font-size: 0.95rem; line-height: 1.5; animation: slideInUp 0.3s ease; }
+        .chat-header-mascot { width: 45px; height: 45px; background: white; border-radius: 50%; object-fit: cover; }
+        .chat-body { flex: 1; padding: 15px; background: #f9fdfd; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px 15px; border-radius: 18px; max-width: 85%; font-size: 0.95rem; line-height: 1.4; word-wrap: break-word; }
         .msg-bot { background: white; color: var(--text-dark); align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .msg-user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-        .chat-footer { padding: 15px; background: white; display: flex; gap: 10px; }
-        .chat-input { flex: 1; border: none; background: #f0fdfa; padding: 12px 20px; border-radius: 30px; outline: none; }
-        .send-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--primary); color: white; border: none; cursor: pointer; }
-        
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        @keyframes slideInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .chat-footer { padding: 10px 15px; background: white; display: flex; gap: 8px; border-top: 1px solid #eee; }
+        .chat-input { flex: 1; border: none; background: #f0fdfa; padding: 10px 18px; border-radius: 25px; outline: none; font-family: 'Prompt'; }
+        .send-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; border: none; cursor: pointer; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
     </style>
 </head>
 <body>
@@ -66,7 +72,7 @@
     <div class="hero-section">
         <img src="https://img5.pic.in.th/file/secure-sv1/c368f6f06db807a94db5c7cf939baf76.png" class="hero-mascot">
         <h1 class="hero-title">โรงพยาบาลสะเดา</h1>
-        <p class="hero-subtitle">ปรึกษาเรื่องยาและสมุนไพรกับ <b>"น้องสะเดา"</b> <br>ผู้ช่วยแพทย์แผนไทยและแพทย์แผนจีนอัจฉริยะ</p>
+        <p class="hero-subtitle">ผู้ช่วยอัจฉริยะ <b>"น้องสะเดา"</b><br>เชี่ยวชาญแพทย์แผนไทยและแพทย์แผนจีน</p>
     </div>
 
     <div class="chat-fab-container">
@@ -78,28 +84,30 @@
     <div class="chat-window" id="chatWindow">
         <div class="chat-header">
             <img src="https://img5.pic.in.th/file/secure-sv1/c368f6f06db807a94db5c7cf939baf76.png" class="chat-header-mascot">
-            <div>
-                <h3 style="margin:0">น้องสะเดา (AI)</h3>
-                <small>ออนไลน์ • พร้อมให้คำปรึกษาค่ะ</small>
+            <div style="flex:1">
+                <h3 style="margin:0; font-size:1rem">น้องสะเดา (AI)</h3>
+                <small style="opacity:0.9">ออนไลน์</small>
             </div>
-            <i class="fas fa-times" style="margin-left:auto; cursor:pointer" onclick="toggleChat()"></i>
+            <i class="fas fa-times" style="cursor:pointer" onclick="toggleChat()"></i>
         </div>
         <div class="chat-body" id="chatBody">
-            <div class="msg msg-bot">สวัสดีค่ะ 🙏 น้องสะเดายินดีให้บริการค่ะ ปรึกษาเรื่องการใช้ยา สมุนไพร หรือการรักษาแผนไทย/จีนได้เลยนะคะ 😊</div>
+            <div class="msg msg-bot">สวัสดีค่ะ 🙏 น้องสะเดายินดีให้บริการค่ะ สอบถามเรื่องการใช้ยา สมุนไพร หรือการรักษาได้เลยนะคะ 😊</div>
         </div>
-        <div id="typing" style="display:none; padding: 10px 20px; font-size: 0.8rem; color: #666;">น้องสะเดากำลังพิมพ์...</div>
+        <div id="typing" style="display:none; padding: 5px 20px; font-size: 0.75rem; color: #888;">น้องสะเดากำลังค้นหาข้อมูล...</div>
         <div class="chat-footer">
-            <input type="text" id="chatInput" class="chat-input" placeholder="พิมพ์ข้อความที่นี่...">
+            <input type="text" id="chatInput" class="chat-input" placeholder="พิมพ์ถามน้องสะเดา..." autocomplete="off">
             <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
     <script>
+        // *** สำคัญ: นำ URL ที่ได้จากการ Deploy ใน Google Apps Script มาใส่ที่นี่ ***
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyQKDaHWzzb2PIuend4HS62cDD0qrGQmtFOzvKMYBzNGcv7Wj4LxVsTz_HfAmtvJbbzsA/exec";
 
         function toggleChat() {
             const win = document.getElementById('chatWindow');
             win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+            if(win.style.display === 'flex') document.getElementById('chatInput').focus();
         }
 
         async function sendMessage() {
@@ -120,7 +128,7 @@
                 const data = await res.json();
                 appendMsg(data.reply, 'bot');
             } catch (e) {
-                appendMsg("ขออภัยค่ะ ระบบขัดข้อง กรุณาลองใหม่นะคะ", 'bot');
+                appendMsg("ขออภัยค่ะ ระบบขัดข้องชั่วคราว ลองใหม่อีกครั้งนะคะ", 'bot');
             } finally {
                 document.getElementById('typing').style.display = 'none';
             }
