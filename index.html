@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>น้องสะเดา - รพ.สะเดา</title>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
+    /* CSS เดิมของคุณ */
     body { font-family: 'Sarabun', sans-serif; background-color: #f4f6f4; margin: 0; display: flex; flex-direction: column; height: 100vh; }
     .header { background: #4CAF50; color: white; padding: 15px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .header img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #fff; }
@@ -25,14 +28,14 @@
   <img src="https://img5.pic.in.th/file/secure-sv1/c368f6f06db807a94db5c7cf939baf76.png">
   <div>
     <div style="font-weight:600; font-size:18px;">น้องสะเดา</div>
-    <div style="font-size:12px; opacity:0.9;">ผู้ช่วยแพทย์แผนไทย</div>
+    <div style="font-size:12px; opacity:0.9;">ผู้ช่วยแพทย์แผนไทย (GitHub Ver.)</div>
   </div>
 </div>
 
 <div id="chat-box">
   <div class="msg-row">
     <img src="https://img5.pic.in.th/file/secure-sv1/c368f6f06db807a94db5c7cf939baf76.png" class="avatar">
-    <div class="msg bot">สวัสดีค่ะ น้องสะเดา ยินดีให้บริการค่ะ 🌿<br>ถามเรื่องยาสมุนไพร หรือเช็คคิวได้เลยนะคะ</div>
+    <div class="msg bot">สวัสดีค่ะ น้องสะเดาพร้อมให้บริการผ่าน GitHub แล้วค่ะ 🌿<br>ลองพิมพ์มาคุยกันได้เลยนะคะ</div>
   </div>
 </div>
 <div class="loading" id="loader">น้องสะเดากำลังคิด...</div>
@@ -43,6 +46,11 @@
 </div>
 
 <script>
+  // ********************************************************
+  // 🔴 เอาลิงก์จาก Google Script (/exec) มาใส่ตรงนี้ 🔴
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQKDaHWzzb2PIuend4HS62cDD0qrGQmtFOzvKMYBzNGcv7Wj4LxVsTz_HfAmtvJbbzsA/exec"; 
+  // ********************************************************
+
   function send() {
     var txt = document.getElementById('txt').value.trim();
     if(!txt) return;
@@ -51,25 +59,37 @@
     document.getElementById('txt').value = '';
     document.getElementById('loader').style.display = 'block';
 
-    google.script.run.withSuccessHandler(function(reply) {
+    // เปลี่ยนจาก google.script.run เป็น fetch() เพื่อคุยข้าม Server
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ message: txt }),
+      // ใช้ text/plain เพื่อหลบปัญหา CORS ของ Google
+      headers: { "Content-Type": "text/plain;charset=utf-8" } 
+    })
+    .then(response => response.json())
+    .then(data => {
       document.getElementById('loader').style.display = 'none';
-      addMsg(reply, 'bot');
-    }).processMessage(txt);
+      addMsg(data.reply, 'bot');
+    })
+    .catch(error => {
+      document.getElementById('loader').style.display = 'none';
+      addMsg("เกิดข้อผิดพลาดในการเชื่อมต่อค่ะ", 'bot');
+      console.error('Error:', error);
+    });
   }
 
   function addMsg(html, role) {
     var box = document.getElementById('chat-box');
+    var div = document.createElement('div');
     if(role === 'bot') {
-      var div = document.createElement('div');
       div.className = 'msg-row';
       div.innerHTML = `<img src="https://img5.pic.in.th/file/secure-sv1/c368f6f06db807a94db5c7cf939baf76.png" class="avatar"><div class="msg bot">${html}</div>`;
-      box.appendChild(div);
     } else {
-      var div = document.createElement('div');
-      div.className = 'msg user'; // user uses flex-self handling in CSS, no row wrapper needed mostly but keeping structured
+      div.className = 'msg user';
       div.innerHTML = html;
-      box.appendChild(div);
+      div.style.marginLeft = "auto";
     }
+    box.appendChild(div);
     box.scrollTop = box.scrollHeight;
   }
 </script>
