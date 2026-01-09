@@ -1,52 +1,84 @@
-<style>
-    /* เพิ่มสไตล์ปุ่มลิงก์ภายนอก */
-    .service-links {
-        display: flex;
-        padding: 10px 20px;
-        gap: 10px;
-        background: #f0fdfa;
-        border-bottom: 1px solid #e2e8f0;
-    }
-    .link-btn {
-        flex: 1;
-        text-decoration: none;
-        background: white;
-        color: var(--primary);
-        padding: 8px;
-        border-radius: 10px;
-        font-size: 0.75rem;
-        text-align: center;
-        border: 1px solid var(--primary);
-        font-weight: 500;
-        transition: 0.3s;
-    }
-    .link-btn:hover {
-        background: var(--primary);
-        color: white;
-    }
-    .link-btn i { margin-right: 5px; }
-</style>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>น้องใบบุญ - AI รพ.สะเดา</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* สไตล์หน้าจอแชทแบบ Full Screen สำหรับหน้าหลัก */
+        body { font-family: 'Prompt', sans-serif; background: #f0fdfa; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        .chat-header { background: #0d9488; color: white; padding: 15px; text-align: center; font-weight: 500; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .msg { max-width: 80%; padding: 12px 16px; border-radius: 15px; font-size: 0.95rem; line-height: 1.5; }
+        .msg-bot { background: white; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .msg-user { background: #0d9488; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .input-area { background: white; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #e2e8f0; }
+        input { flex: 1; border: 1px solid #e2e8f0; padding: 12px; border-radius: 25px; outline: none; font-family: 'Prompt'; }
+        button { background: #0d9488; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
+        .quick-links { display: flex; gap: 10px; padding: 0 20px 10px; overflow-x: auto; }
+        .q-btn { background: #ccfbf1; color: #0d9488; border: none; padding: 8px 15px; border-radius: 15px; font-size: 0.8rem; white-space: nowrap; cursor: pointer; font-family: 'Prompt'; }
+    </style>
+</head>
+<body>
 
-<div class="chat-window" id="chatWindow">
-    <div class="chat-header">
-        </div>
+<div class="chat-header">
+    <i class="fas fa-robot"></i> น้องใบบุญ ผู้ช่วยอัจฉริยะ รพ.สะเดา
+</div>
 
-    <div class="service-links">
-        <a href="https://poppingaeiou.github.io/TTMSADAOHOS/" target="_blank" class="link-btn">
-            <i class="fas fa-calendar-check"></i> จองคิวออนไลน์
-        </a>
-        <a href="https://poppingaeiou.github.io/TTMTCMSADAO/" target="_blank" class="link-btn">
-            <i class="fas fa-stethscope"></i> บริการของเรา
-        </a>
-    </div>
-    
-    <div class="chat-body" id="chatBody">
-        </div>
+<div class="chat-container" id="chatBox">
+    <div class="msg msg-bot">สวัสดีค่ะ น้องใบบุญพร้อมให้ข้อมูลเรื่อง <b>ยาสมุนไพร</b>, <b>การจองคิว</b> และ <b>บริการแพทย์แผนไทย/จีน</b> แล้วค่ะ มีอะไรให้ช่วยไหมคะ?</div>
+</div>
 
-    <div class="quick-actions">
-        <button class="quick-btn" onclick="quickSend('ขอนัดจองคิวบริการ')">📅 จองคิว</button>
-        <button class="quick-btn" onclick="quickSend('ขอดูข้อมูลบริการแผนไทยและจีน')">🏥 ข้อมูลบริการ</button>
-        <button class="quick-btn" onclick="quickSend('มียาแก้ปวดแนะนำไหม')">🌿 แนะนำยา</button>
-    </div>
-    
-    </div>
+<div class="quick-links">
+    <button class="q-btn" onclick="sendMsg('อยากจองคิวรับบริการ')">📅 จองคิวออนไลน์</button>
+    <button class="q-btn" onclick="sendMsg('ขอดูข้อมูลบริการแพทย์ไทย-จีน')">🏥 ข้อมูลบริการ</button>
+    <button class="q-btn" onclick="sendMsg('มียาสมุนไพรแนะนำไหม')">🌿 แนะนำยา</button>
+</div>
+
+<div class="input-area">
+    <input type="text" id="userInput" placeholder="พิมพ์ถามน้องใบบุญที่นี่..." onkeypress="if(event.key==='Enter') sendMessage()">
+    <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+</div>
+
+<script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyQKDaHWzzb2PIuend4HS62cDD0qrGQmtFOzvKMYBzNGcv7Wj4LxVsTz_HfAmtvJbbzsA/exec";
+
+    function appendMessage(text, side) {
+        const box = document.getElementById('chatBox');
+        const div = document.createElement('div');
+        div.className = `msg msg-${side}`;
+        div.innerHTML = text.replace(/\n/g, '<br>');
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function sendMsg(text) {
+        document.getElementById('userInput').value = text;
+        sendMessage();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('userInput');
+        const text = input.value.trim();
+        if(!text) return;
+
+        appendMessage(text, 'user');
+        input.value = '';
+
+        try {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ message: text })
+            });
+            const data = await res.json();
+            appendMessage(data.reply, 'bot');
+        } catch (e) {
+            appendMessage("ขออภัยค่ะ ระบบเชื่อมต่อฐานข้อมูลไม่ได้", 'bot');
+        }
+    }
+</script>
+
+</body>
+</html>
