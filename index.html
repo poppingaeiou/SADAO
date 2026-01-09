@@ -3,32 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>น้องสะเดา AI</title>
+    <title>น้องสะเดา AI - รพ.สะเดา</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #0d9488; --radius: 20px; }
-        body { font-family: 'Prompt', sans-serif; background: #e0f2f1; margin: 0; padding: 0; overflow: hidden; }
+        :root { --primary: #0d9488; --bg: #f0fdfa; }
+        body { font-family: 'Prompt', sans-serif; background: #e0f2f1; margin: 0; padding: 0; }
         
         .chat-fab { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1000; cursor: pointer; }
-        .chat-fab img { width: 100%; height: 100%; border-radius: 50%; }
+        .chat-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        .chat-window { position: fixed; bottom: 90px; right: 15px; width: 350px; max-width: calc(100% - 30px); height: 500px; max-height: 70vh; background: white; border-radius: var(--radius); display: none; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 999; overflow: hidden; border: 1px solid #eee; }
+        .chat-window { position: fixed; bottom: 90px; right: 15px; width: 350px; max-width: calc(100% - 30px); height: 500px; max-height: 70vh; background: white; border-radius: 20px; display: none; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 999; overflow: hidden; border: 1px solid #eee; }
         
         .chat-header { background: var(--primary); color: white; padding: 12px 15px; display: flex; align-items: center; gap: 10px; }
         .chat-header img { width: 40px; height: 40px; border-radius: 50%; background: white; }
         
         .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
         .msg { padding: 10px 14px; border-radius: 15px; max-width: 85%; font-size: 0.9rem; line-height: 1.4; word-wrap: break-word; }
-        .msg-bot { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg-bot { background: white; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .msg-user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
 
-        .quick-replies { padding: 8px; display: flex; gap: 6px; overflow-x: auto; background: white; border-top: 1px solid #eee; }
-        .quick-btn { border: 1px solid var(--primary); background: white; color: var(--primary); padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
-
         .chat-footer { padding: 10px; display: flex; gap: 8px; background: white; border-top: 1px solid #eee; }
-        .chat-input { flex: 1; border: none; background: #f1f5f9; padding: 8px 15px; border-radius: 20px; outline: none; font-size: 0.9rem; }
-        .send-btn { background: var(--primary); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
+        .chat-input { flex: 1; border: none; background: #f1f5f9; padding: 10px 15px; border-radius: 20px; outline: none; font-size: 0.9rem; font-family: 'Prompt'; }
+        .send-btn { background: var(--primary); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
+
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -45,12 +44,7 @@
         </div>
         
         <div class="chat-body" id="chatBody">
-            <div class="msg msg-bot">สวัสดีค่ะ 🙏 น้องสะเดายินดีให้บริการค่ะ ปรึกษาเรื่องยาหรือเช็คคิวได้เลยนะคะ 😊</div>
-        </div>
-
-        <div class="quick-replies">
-            <button class="quick-btn" onclick="quickAsk('เช็คคิวว่างวันนี้')">🕒 คิวว่างวันนี้</button>
-            <button class="quick-btn" onclick="quickAsk('แนะนำสมุนไพรแก้ปวดเมื่อย')">🌿 ยาแก้ปวด</button>
+            <div class="msg msg-bot">สวัสดีค่ะ 🙏 น้องสะเดายินดีให้บริการค่ะ ปรึกษาเรื่องการใช้ยาสมุนไพรไทย-จีนได้เลยนะคะ 😊</div>
         </div>
 
         <div class="chat-footer">
@@ -66,8 +60,6 @@
             const win = document.getElementById('chatWindow');
             win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
         }
-
-        function quickAsk(t) { document.getElementById('chatInput').value = t; sendMessage(); }
 
         async function sendMessage() {
             const input = document.getElementById('chatInput');
@@ -86,7 +78,7 @@
                 const data = await res.json();
                 appendMsg(data.reply, 'bot');
             } catch (e) {
-                appendMsg("ขออภัยค่ะ ระบบใช้เวลาประมวลผลนานเกินไป รบกวนกดถามใหม่อีกครั้งนะคะ 🙏", 'bot');
+                appendMsg("น้องสะเดาขออภัยค่ะ ระบบขัดข้องเล็กน้อย รบกวนลองใหม่อีกครั้งนะคะ 🙏", 'bot');
             }
         }
 
